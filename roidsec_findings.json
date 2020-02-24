@@ -114,11 +114,11 @@
     },
     {
       "source": {
-        "statement": "String packagename = packageInfo.packageName;",
+        "statement": "List<PackageInfo> packages = getPackageManager().getInstalledPackages(0);",
         "methodName": "private String getInstalledApp()",
         "className": "cn.phoneSync.PhoneSyncService",
-        "lineNo": 604,
-        "targetName": "packageName",
+        "lineNo": 599,
+        "targetName": "getInstalledPackages",
         "targetNo": 1,
         "IRs": [
           {
@@ -143,18 +143,25 @@
       },
       "intermediateFlows": [
         {
+          "statement": "String packagename = packageInfo.packageName;",
+          "methodName": "private String getInstalledApp()",
+          "className": "cn.phoneSync.PhoneSyncService",
+          "lineNo": 604,
+          "ID": 1
+        },
+        {
           "statement": "sb.append(appname).append(\"|\").append(packagename).append(\"|\").append(versionName).append(\"|\").append(versionCode).append(\"~\");",
           "methodName": "private String getInstalledApp()",
           "className": "cn.phoneSync.PhoneSyncService",
           "lineNo": 600,
-          "ID": 1
+          "ID": 2
         },
         {
           "statement": "return sb.toString();",
           "methodName": "private String getInstalledApp()",
           "className": "cn.phoneSync.PhoneSyncService",
           "lineNo": 614,
-          "ID": 2
+          "ID": 3
         }
       ],
       "attributes": {
